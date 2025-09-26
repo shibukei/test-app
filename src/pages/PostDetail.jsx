@@ -8,7 +8,6 @@ export default function PostDetail() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let mounted = true;
     const fetcher = async () => {
       try {
         const res = await fetch(
@@ -18,17 +17,14 @@ export default function PostDetail() {
         const data = await res.json();
         // API の構造に応じて data.post か data を使う
         const p = data.post ?? data;
-        if (mounted) setPost(p);
+        setPost(p);
       } catch (e) {
-        if (mounted) setError(e.message);
+        setError(e.message);
       } finally {
-        if (mounted) setLoading(false);
+        setLoading(false);
       }
     };
     fetcher();
-    return () => {
-      mounted = false;
-    };
   }, [id]);
 
   if (loading) return <div className="p-4">読み込み中...</div>;
