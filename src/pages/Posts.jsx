@@ -1,8 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { posts } from "../data/posts";
 
 export default function Posts() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetcher = async () => {
+      try {
+        const res = await fetch(
+          "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts"
+        );
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        // API の構造に応じて data.posts か data を使う
+        const list = data.posts ?? data;
+        if (mounted) setPosts(list);
+      } catch (e) {
+        if (mounted) setError(e.message);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    fetcher();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (loading) return <div className="p-4">読み込み中...</div>;
+  if (error) return <div className="p-4 text-red-600">エラー: {error}</div>;
+
   return (
     <>
       {posts.map((p) => (
@@ -17,7 +47,7 @@ export default function Posts() {
               />
             )}
             <div className="text-sm text-gray-500 mb-2">
-              {new Date(p.createdAt).toLocaleString()}
+              {p.createdAt ? new Date(p.createdAt).toLocaleString() : ""}
             </div>
             <div className="mb-2">
               {Array.isArray(p.categories) &&
