@@ -4,6 +4,7 @@ import './App.css';
 import Header from './components/Header';
 import Posts from './pages/Posts';
 import PostDetail from './pages/PostDetail';
+import Contact from './pages/Contact';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Routes>
               <Route path='/' element={<Posts />} />
               <Route path='/posts/:id' element={<PostDetail />} />
+              <Route path='/contact' element={<Contact />} />
             </Routes>
           </div>
         </div>
