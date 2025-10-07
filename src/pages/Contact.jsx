@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Input from "../components/Input";
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -66,13 +67,12 @@ export default function Contact() {
             お名前
           </label>
           <div className="flex-1">
-            <input
+            <Input
               type="text"
               name="name"
               value={form.name}
               onChange={handleChange}
               disabled={isSubmitting}
-              className="w-full p-2 border border-gray-300 rounded"
             />
             {errors.name && (
               <p className="text-red-600 text-sm mt-1">{errors.name}</p>
@@ -84,13 +84,12 @@ export default function Contact() {
             メールアドレス
           </label>
           <div className="flex-1">
-            <input
+            <Input
               type="email"
               name="email"
               value={form.email}
               onChange={handleChange}
               disabled={isSubmitting}
-              className="w-full p-2 border border-gray-300 rounded"
             />
             {errors.email && (
               <p className="text-red-600 text-sm mt-1">{errors.email}</p>
@@ -126,6 +125,7 @@ export default function Contact() {
           <button
             type="button"
             onClick={handleClear}
+            disabled={isSubmitting}
             className="bg-gray-200 font-bold py-2 px-4 rounded-lg"
           >
             クリア
